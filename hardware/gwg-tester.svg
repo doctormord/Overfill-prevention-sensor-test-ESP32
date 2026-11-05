@@ -1,0 +1,224 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="950" height="672" viewBox="0 0 297.0 210.0">
+<rect width="297.0" height="210.0" fill="#fffef9"/>
+<g stroke="#1b2a33" stroke-width="0.25" fill="none" stroke-linecap="round">
+<rect x="5" y="5" width="287.0" height="200.0" stroke="#1b2a33" stroke-width="0.4"/>
+<rect x="132.0" y="183.0" width="160.0" height="22.0" stroke="#1b2a33" stroke-width="0.4"/>
+<line x1="132.0" y1="191.0" x2="292.0" y2="191.0" stroke="#1b2a33" stroke-width="0.25"/>
+<text x="135.000" y="188.600" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="3.0" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">Grenzwertgeber (PTC) test set - analogue front end</text>
+<text x="135.000" y="196.000" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="2.0" font-weight="normal" text-anchor="start" fill="#4a5a63" stroke="none">github.com/doctormord/Overfill-prevention-sensor-test-ESP32</text>
+<text x="135.000" y="201.500" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="2.0" font-weight="normal" text-anchor="start" fill="#4a5a63" stroke="none">Rev 1.0  |  2026-11-04  |  Sheet 1/1  |  A4</text>
+<line x1="35.56" y1="30.48" x2="43.18" y2="30.48" stroke-width="0.3"/>
+<line x1="35.56" y1="35.56" x2="43.18" y2="35.56" stroke-width="0.3"/>
+<line x1="71.12" y1="27.94" x2="71.12" y2="38.1" stroke-width="0.3"/>
+<line x1="71.12" y1="45.72" x2="71.12" y2="50.8" stroke-width="0.3"/>
+<line x1="71.12" y1="50.8" x2="104.14" y2="50.8" stroke-width="0.3"/>
+<line x1="88.9" y1="58.42" x2="88.9" y2="63.5" stroke-width="0.3"/>
+<line x1="88.9" y1="63.5" x2="104.14" y2="63.5" stroke-width="0.3"/>
+<line x1="104.14" y1="55.88" x2="104.14" y2="63.5" stroke-width="0.3"/>
+<line x1="121.92" y1="66.04" x2="128.27" y2="66.04" stroke-width="0.3"/>
+<line x1="135.89" y1="66.04" x2="142.24" y2="66.04" stroke-width="0.3"/>
+<line x1="142.24" y1="73.66" x2="142.24" y2="81.28" stroke-width="0.3"/>
+<line x1="162.56" y1="66.04" x2="170.18" y2="66.04" stroke-width="0.3"/>
+<line x1="162.56" y1="73.66" x2="162.56" y2="81.28" stroke-width="0.3"/>
+<line x1="190.5" y1="33.02" x2="190.5" y2="38.1" stroke-width="0.3"/>
+<line x1="190.5" y1="45.72" x2="190.5" y2="48.26" stroke-width="0.3"/>
+<line x1="190.5" y1="48.26" x2="190.5" y2="50.8" stroke-width="0.3"/>
+<line x1="190.5" y1="58.42" x2="190.5" y2="66.04" stroke-width="0.3"/>
+<line x1="190.5" y1="48.26" x2="200.66" y2="48.26" stroke-width="0.3"/>
+<line x1="200.66" y1="55.88" x2="200.66" y2="66.04" stroke-width="0.3"/>
+<line x1="215.9" y1="30.48" x2="215.9" y2="38.1" stroke-width="0.3"/>
+<line x1="215.9" y1="45.72" x2="215.9" y2="48.26" stroke-width="0.3"/>
+<line x1="215.9" y1="48.26" x2="215.9" y2="50.8" stroke-width="0.3"/>
+<line x1="215.9" y1="58.42" x2="215.9" y2="66.04" stroke-width="0.3"/>
+<line x1="215.9" y1="48.26" x2="226.06" y2="48.26" stroke-width="0.3"/>
+<line x1="226.06" y1="55.88" x2="226.06" y2="66.04" stroke-width="0.3"/>
+<line x1="66.04" y1="96.52" x2="76.2" y2="96.52" stroke-width="0.3"/>
+<line x1="66.04" y1="100.33" x2="76.2" y2="100.33" stroke-width="0.3"/>
+<line x1="66.04" y1="104.14" x2="76.2" y2="104.14" stroke-width="0.3"/>
+<line x1="66.04" y1="107.95" x2="66.04" y2="115.57" stroke-width="0.3"/>
+<circle cx="88.9" cy="50.8" r="0.6" fill="#1b2a33" stroke="none"/>
+<circle cx="190.5" cy="48.26" r="0.6" fill="#1b2a33" stroke="none"/>
+<circle cx="215.9" cy="48.26" r="0.6" fill="#1b2a33" stroke="none"/>
+<rect x="25.400" y="29.210" width="5.080" height="7.620" stroke-width="0.3" fill="#ffffff"/>
+<line x1="35.560" y1="30.480" x2="33.020" y2="30.480" stroke-width="0.3"/>
+<text x="31.960" y="30.980" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="end" fill="#4a5a63" stroke="none">1</text>
+<line x1="35.560" y1="35.560" x2="33.020" y2="35.560" stroke-width="0.3"/>
+<text x="31.960" y="36.060" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="end" fill="#4a5a63" stroke="none">2</text>
+<text x="27.940" y="27.940" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="middle" fill="#1b2a33" stroke="none">J1</text>
+<text x="27.940" y="38.100" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">19V DC in</text>
+<line x1="43.180" y1="30.480" x2="43.180" y2="28.575" stroke-width="0.3"/>
+<line x1="41.910" y1="28.575" x2="44.450" y2="28.575" stroke-width="0.3"/>
+<line x1="43.180" y1="30.480" x2="43.180" y2="33.020" stroke-width="0.3"/>
+<text x="43.180" y="26.670" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">+19V</text>
+<line x1="43.180" y1="35.560" x2="43.180" y2="37.465" stroke-width="0.3"/>
+<line x1="41.275" y1="37.465" x2="45.085" y2="37.465" stroke-width="0.3"/>
+<line x1="42.037" y1="38.227" x2="44.323" y2="38.227" stroke-width="0.3"/>
+<line x1="42.799" y1="38.989" x2="43.561" y2="38.989" stroke-width="0.3"/>
+<line x1="43.180" y1="35.560" x2="43.180" y2="33.020" stroke-width="0.3"/>
+<text x="43.180" y="40.640" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">GND</text>
+<line x1="71.120" y1="27.940" x2="71.120" y2="26.035" stroke-width="0.3"/>
+<line x1="69.850" y1="26.035" x2="72.390" y2="26.035" stroke-width="0.3"/>
+<line x1="71.120" y1="27.940" x2="71.120" y2="30.480" stroke-width="0.3"/>
+<text x="71.120" y="24.130" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">+19V</text>
+<rect x="70.104" y="39.370" width="2.032" height="5.080" stroke-width="0.3" fill="#ffffff"/>
+<line x1="71.120" y1="38.100" x2="71.120" y2="40.640" stroke-width="0.3"/>
+<line x1="71.120" y1="45.720" x2="71.120" y2="43.180" stroke-width="0.3"/>
+<text x="73.660" y="40.640" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">R1</text>
+<text x="73.660" y="43.180" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">159R</text>
+<rect x="87.884" y="52.070" width="2.032" height="5.080" stroke-width="0.3" fill="#ffffff"/>
+<line x1="88.900" y1="50.800" x2="88.900" y2="53.340" stroke-width="0.3"/>
+<line x1="88.900" y1="58.420" x2="88.900" y2="55.880" stroke-width="0.3"/>
+<text x="91.440" y="53.340" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">R2</text>
+<text x="91.440" y="55.880" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">1M</text>
+<rect x="109.220" y="49.530" width="5.080" height="7.620" stroke-width="0.3" fill="#ffffff"/>
+<line x1="104.140" y1="50.800" x2="106.680" y2="50.800" stroke-width="0.3"/>
+<text x="107.740" y="51.300" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="start" fill="#4a5a63" stroke="none">1</text>
+<line x1="104.140" y1="55.880" x2="106.680" y2="55.880" stroke-width="0.3"/>
+<text x="107.740" y="56.380" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="start" fill="#4a5a63" stroke="none">2</text>
+<text x="111.760" y="48.260" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="middle" fill="#1b2a33" stroke="none">J2</text>
+<text x="111.760" y="58.420" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">probe</text>
+<rect x="129.540" y="65.024" width="5.080" height="2.032" stroke-width="0.3" fill="#ffffff"/>
+<line x1="128.270" y1="66.040" x2="130.810" y2="66.040" stroke-width="0.3"/>
+<line x1="135.890" y1="66.040" x2="133.350" y2="66.040" stroke-width="0.3"/>
+<text x="132.080" y="63.246" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="middle" fill="#1b2a33" stroke="none">R3</text>
+<text x="132.080" y="68.834" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">220R</text>
+<rect x="144.780" y="62.230" width="15.240" height="12.700" stroke-width="0.3" fill="#ffffff"/>
+<line x1="152.400" y1="74.930" x2="152.400" y2="62.230" stroke-width="0.3"/>
+<line x1="142.240" y1="66.040" x2="144.780" y2="66.040" stroke-width="0.3"/>
+<text x="140.940" y="65.340" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.2" font-weight="normal" text-anchor="start" fill="#8a6b2b" stroke="none">1</text>
+<text x="145.840" y="66.540" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="start" fill="#4a5a63" stroke="none">A</text>
+<line x1="142.240" y1="73.660" x2="144.780" y2="73.660" stroke-width="0.3"/>
+<text x="140.940" y="72.960" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.2" font-weight="normal" text-anchor="start" fill="#8a6b2b" stroke="none">2</text>
+<text x="145.840" y="74.160" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="start" fill="#4a5a63" stroke="none">K</text>
+<line x1="162.560" y1="66.040" x2="160.020" y2="66.040" stroke-width="0.3"/>
+<text x="163.860" y="65.340" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.2" font-weight="normal" text-anchor="end" fill="#8a6b2b" stroke="none">3</text>
+<text x="158.960" y="66.540" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="end" fill="#4a5a63" stroke="none">S1</text>
+<line x1="162.560" y1="73.660" x2="160.020" y2="73.660" stroke-width="0.3"/>
+<text x="163.860" y="72.960" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.2" font-weight="normal" text-anchor="end" fill="#8a6b2b" stroke="none">4</text>
+<text x="158.960" y="74.160" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="end" fill="#4a5a63" stroke="none">S2</text>
+<text x="152.400" y="59.690" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="middle" fill="#1b2a33" stroke="none">U1</text>
+<text x="152.400" y="77.470" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">CPC1906Y</text>
+<line x1="142.240" y1="81.280" x2="142.240" y2="83.185" stroke-width="0.3"/>
+<line x1="140.335" y1="83.185" x2="144.145" y2="83.185" stroke-width="0.3"/>
+<line x1="141.097" y1="83.947" x2="143.383" y2="83.947" stroke-width="0.3"/>
+<line x1="141.859" y1="84.709" x2="142.621" y2="84.709" stroke-width="0.3"/>
+<line x1="142.240" y1="81.280" x2="142.240" y2="78.740" stroke-width="0.3"/>
+<text x="142.240" y="86.360" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">GND</text>
+<line x1="162.560" y1="81.280" x2="162.560" y2="83.185" stroke-width="0.3"/>
+<line x1="160.655" y1="83.185" x2="164.465" y2="83.185" stroke-width="0.3"/>
+<line x1="161.417" y1="83.947" x2="163.703" y2="83.947" stroke-width="0.3"/>
+<line x1="162.179" y1="84.709" x2="162.941" y2="84.709" stroke-width="0.3"/>
+<line x1="162.560" y1="81.280" x2="162.560" y2="78.740" stroke-width="0.3"/>
+<text x="162.560" y="86.360" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">GND</text>
+<rect x="189.484" y="39.370" width="2.032" height="5.080" stroke-width="0.3" fill="#ffffff"/>
+<line x1="190.500" y1="38.100" x2="190.500" y2="40.640" stroke-width="0.3"/>
+<line x1="190.500" y1="45.720" x2="190.500" y2="43.180" stroke-width="0.3"/>
+<text x="193.040" y="40.640" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">R4</text>
+<text x="193.040" y="43.180" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">100k</text>
+<rect x="189.484" y="52.070" width="2.032" height="5.080" stroke-width="0.3" fill="#ffffff"/>
+<line x1="190.500" y1="50.800" x2="190.500" y2="53.340" stroke-width="0.3"/>
+<line x1="190.500" y1="58.420" x2="190.500" y2="55.880" stroke-width="0.3"/>
+<text x="193.040" y="53.340" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">R5</text>
+<text x="193.040" y="55.880" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">10k</text>
+<line x1="198.882" y1="51.562" x2="202.438" y2="51.562" stroke-width="0.3"/>
+<line x1="198.882" y1="52.578" x2="202.438" y2="52.578" stroke-width="0.3"/>
+<line x1="200.660" y1="48.260" x2="200.660" y2="50.800" stroke-width="0.3"/>
+<line x1="200.660" y1="55.880" x2="200.660" y2="53.340" stroke-width="0.3"/>
+<text x="203.200" y="50.800" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">C1</text>
+<text x="203.200" y="53.340" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">10n  (DNP)</text>
+<line x1="190.500" y1="66.040" x2="190.500" y2="67.945" stroke-width="0.3"/>
+<line x1="188.595" y1="67.945" x2="192.405" y2="67.945" stroke-width="0.3"/>
+<line x1="189.357" y1="68.707" x2="191.643" y2="68.707" stroke-width="0.3"/>
+<line x1="190.119" y1="69.469" x2="190.881" y2="69.469" stroke-width="0.3"/>
+<line x1="190.500" y1="66.040" x2="190.500" y2="63.500" stroke-width="0.3"/>
+<text x="190.500" y="71.120" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">GND</text>
+<line x1="200.660" y1="66.040" x2="200.660" y2="67.945" stroke-width="0.3"/>
+<line x1="198.755" y1="67.945" x2="202.565" y2="67.945" stroke-width="0.3"/>
+<line x1="199.517" y1="68.707" x2="201.803" y2="68.707" stroke-width="0.3"/>
+<line x1="200.279" y1="69.469" x2="201.041" y2="69.469" stroke-width="0.3"/>
+<line x1="200.660" y1="66.040" x2="200.660" y2="63.500" stroke-width="0.3"/>
+<text x="200.660" y="71.120" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">GND</text>
+<line x1="215.900" y1="30.480" x2="215.900" y2="28.575" stroke-width="0.3"/>
+<line x1="214.630" y1="28.575" x2="217.170" y2="28.575" stroke-width="0.3"/>
+<line x1="215.900" y1="30.480" x2="215.900" y2="33.020" stroke-width="0.3"/>
+<text x="215.900" y="26.670" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">+19V</text>
+<rect x="214.884" y="39.370" width="2.032" height="5.080" stroke-width="0.3" fill="#ffffff"/>
+<line x1="215.900" y1="38.100" x2="215.900" y2="40.640" stroke-width="0.3"/>
+<line x1="215.900" y1="45.720" x2="215.900" y2="43.180" stroke-width="0.3"/>
+<text x="218.440" y="40.640" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">R6</text>
+<text x="218.440" y="43.180" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">100k</text>
+<rect x="214.884" y="52.070" width="2.032" height="5.080" stroke-width="0.3" fill="#ffffff"/>
+<line x1="215.900" y1="50.800" x2="215.900" y2="53.340" stroke-width="0.3"/>
+<line x1="215.900" y1="58.420" x2="215.900" y2="55.880" stroke-width="0.3"/>
+<text x="218.440" y="53.340" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">R7</text>
+<text x="218.440" y="55.880" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">10k</text>
+<line x1="224.282" y1="51.562" x2="227.838" y2="51.562" stroke-width="0.3"/>
+<line x1="224.282" y1="52.578" x2="227.838" y2="52.578" stroke-width="0.3"/>
+<line x1="226.060" y1="48.260" x2="226.060" y2="50.800" stroke-width="0.3"/>
+<line x1="226.060" y1="55.880" x2="226.060" y2="53.340" stroke-width="0.3"/>
+<text x="228.600" y="50.800" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">C2</text>
+<text x="228.600" y="53.340" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">10n  (DNP)</text>
+<line x1="215.900" y1="66.040" x2="215.900" y2="67.945" stroke-width="0.3"/>
+<line x1="213.995" y1="67.945" x2="217.805" y2="67.945" stroke-width="0.3"/>
+<line x1="214.757" y1="68.707" x2="217.043" y2="68.707" stroke-width="0.3"/>
+<line x1="215.519" y1="69.469" x2="216.281" y2="69.469" stroke-width="0.3"/>
+<line x1="215.900" y1="66.040" x2="215.900" y2="63.500" stroke-width="0.3"/>
+<text x="215.900" y="71.120" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">GND</text>
+<line x1="226.060" y1="66.040" x2="226.060" y2="67.945" stroke-width="0.3"/>
+<line x1="224.155" y1="67.945" x2="227.965" y2="67.945" stroke-width="0.3"/>
+<line x1="224.917" y1="68.707" x2="227.203" y2="68.707" stroke-width="0.3"/>
+<line x1="225.679" y1="69.469" x2="226.441" y2="69.469" stroke-width="0.3"/>
+<line x1="226.060" y1="66.040" x2="226.060" y2="63.500" stroke-width="0.3"/>
+<text x="226.060" y="71.120" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">GND</text>
+<rect x="43.180" y="92.710" width="20.320" height="17.780" stroke-width="0.3" fill="#ffffff"/>
+<line x1="66.040" y1="96.520" x2="63.500" y2="96.520" stroke-width="0.3"/>
+<text x="67.340" y="95.820" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.2" font-weight="normal" text-anchor="end" fill="#8a6b2b" stroke="none">1</text>
+<text x="62.440" y="97.020" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="end" fill="#4a5a63" stroke="none">IO25</text>
+<line x1="66.040" y1="100.330" x2="63.500" y2="100.330" stroke-width="0.3"/>
+<text x="67.340" y="99.630" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.2" font-weight="normal" text-anchor="end" fill="#8a6b2b" stroke="none">2</text>
+<text x="62.440" y="100.830" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="end" fill="#4a5a63" stroke="none">IO32</text>
+<line x1="66.040" y1="104.140" x2="63.500" y2="104.140" stroke-width="0.3"/>
+<text x="67.340" y="103.440" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.2" font-weight="normal" text-anchor="end" fill="#8a6b2b" stroke="none">3</text>
+<text x="62.440" y="104.640" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="end" fill="#4a5a63" stroke="none">IO33</text>
+<line x1="66.040" y1="107.950" x2="63.500" y2="107.950" stroke-width="0.3"/>
+<text x="67.340" y="107.250" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.2" font-weight="normal" text-anchor="end" fill="#8a6b2b" stroke="none">4</text>
+<text x="62.440" y="108.450" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.4" font-weight="normal" text-anchor="end" fill="#4a5a63" stroke="none">GND</text>
+<text x="43.180" y="90.170" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.8" font-weight="bold" text-anchor="start" fill="#1b2a33" stroke="none">MOD1</text>
+<text x="43.180" y="113.030" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="start" fill="#1b2a33" stroke="none">TTGO T-Display</text>
+<line x1="66.040" y1="115.570" x2="66.040" y2="117.475" stroke-width="0.3"/>
+<line x1="64.135" y1="117.475" x2="67.945" y2="117.475" stroke-width="0.3"/>
+<line x1="64.897" y1="118.237" x2="67.183" y2="118.237" stroke-width="0.3"/>
+<line x1="65.659" y1="118.999" x2="66.421" y2="118.999" stroke-width="0.3"/>
+<line x1="66.040" y1="115.570" x2="66.040" y2="113.030" stroke-width="0.3"/>
+<text x="66.040" y="120.650" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="normal" text-anchor="middle" fill="#1b2a33" stroke="none">GND</text>
+<text x="77.000" y="50.200" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="start" fill="#0a6a7a" stroke="none">NODE_A</text>
+<text x="97.320" y="62.900" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="start" fill="#0a6a7a" stroke="none">SW</text>
+<text x="121.120" y="65.440" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="end" fill="#0a6a7a" stroke="none">GATE</text>
+<text x="170.980" y="65.440" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="start" fill="#0a6a7a" stroke="none">SW</text>
+<text x="189.700" y="32.420" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="end" fill="#0a6a7a" stroke="none">NODE_A</text>
+<text x="196.380" y="47.660" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="start" fill="#0a6a7a" stroke="none">ADC_A</text>
+<text x="221.780" y="47.660" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="start" fill="#0a6a7a" stroke="none">ADC_SUP</text>
+<text x="77.000" y="95.920" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="start" fill="#0a6a7a" stroke="none">GATE</text>
+<text x="77.000" y="99.730" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="start" fill="#0a6a7a" stroke="none">ADC_A</text>
+<text x="77.000" y="103.540" font-family="DejaVu Sans, Helvetica, sans-serif" font-size="1.6" font-weight="bold" text-anchor="start" fill="#0a6a7a" stroke="none">ADC_SUP</text>
+<text x="132.080" y="91.440" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">Note 1  R1 = 159.1 R, measured -- not read off a colour code and not</text>
+<text x="132.080" y="95.250" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        back-calculated from the two ADC channels. Build it from standard</text>
+<text x="132.080" y="99.060" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        values and measure the result:</text>
+<text x="132.080" y="102.870" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">            6 x 1k   parallel = 166.7 R   0.10 W each</text>
+<text x="132.080" y="106.680" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">            3 x 470R parallel = 156.7 R   0.21 W each</text>
+<text x="132.080" y="110.490" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        Enter the measured value in firmware/gwg_tester/config.h as R_SERIES.</text>
+<text x="132.080" y="118.110" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">Note 2  C1 and C2 are DNP. If fitted, fit BOTH with the same value: the</text>
+<text x="132.080" y="121.920" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        current is the difference of the two channels, so asymmetric</text>
+<text x="132.080" y="125.730" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        filtering feeds the full supply ripple into the current reading</text>
+<text x="132.080" y="129.540" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        instead of cancelling it. A capacitor on node A alone also stretches</text>
+<text x="132.080" y="133.350" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        the settle time and blocks the pulsed measurement while cooling.</text>
+<text x="132.080" y="140.970" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">Note 3  Tie the 19 V supply ground to module ground. Power MOD1 from USB-C,</text>
+<text x="132.080" y="144.780" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        not from the 19 V rail.</text>
+<text x="132.080" y="152.400" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">Note 4  R2 keeps a defined current flowing with no probe fitted, so</text>
+<text x="132.080" y="156.210" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        open-circuit detection cannot read a plausible value off a floating</text>
+<text x="132.080" y="160.020" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        node. It is divided out in firmware: R_DIV_A = 110k || 1M = 99.1k.</text>
+<text x="132.080" y="167.640" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">Note 5  GPIO32/33 are on ADC1. ADC2 is unusable while WiFi is active.</text>
+<text x="132.080" y="171.450" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="normal" text-anchor="start" fill="#2d3f49" stroke="none">        GPIO0 and GPIO35 are the on-board buttons, no external wiring.</text>
+<text x="132.080" y="179.070" font-family="DejaVu Sans Mono, monospace" font-size="2.0" font-weight="bold" text-anchor="start" fill="#8a2b12" stroke="none">WARNING Not intrinsically safe. Do not test in fuel oil or a hazardous area.</text>
+</g>
+</svg>

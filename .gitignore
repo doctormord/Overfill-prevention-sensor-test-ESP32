@@ -1,0 +1,17 @@
+# Arduino / PlatformIO build output
+build/
+.pio/
+*.elf
+*.bin
+*.map
+
+# KiCad working files
+*-backups/
+*.kicad_prl
+fp-info-cache
+*.bak
+*~
+
+# OS
+.DS_Store
+Thumbs.db

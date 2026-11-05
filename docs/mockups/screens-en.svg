@@ -1,0 +1,137 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1544" height="1056" viewBox="0 0 1544 1056">
+<rect width="1544" height="1056" fill="#f4f1ea"/>
+<text x="26" y="30" font-family="Inter,system-ui,sans-serif" font-size="17" font-weight="600" fill="#1b2a33">TTGO T-Display 240 x 135 &#8212; screens (EN)</text>
+<rect x="22" y="44" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(26,48) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#7b7d7b"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">READY</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">FIELD</text>
+<text x="5" y="63" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="37" fill="#ffffff" text-anchor="start" xml:space="preserve">18.9</text>
+<text x="150" y="71" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#d2d2d2" text-anchor="start" xml:space="preserve">V</text>
+<text x="5" y="91" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">node A 18.9 V</text>
+<text x="5" y="109" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#00ff00" text-anchor="start" xml:space="preserve">right = start</text>
+<text x="5" y="127" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffff00" text-anchor="start" xml:space="preserve">left = change mode</text>
+</g>
+<text x="26" y="336" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">idle</text>
+<text x="26" y="351" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">Idle. Switch off, showing the supply and node A.</text>
+<rect x="528" y="44" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(532,48) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#ffb600"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">HEATING</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">FIELD</text>
+<text x="5" y="63" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="37" fill="#ffffff" text-anchor="start" xml:space="preserve">31.4</text>
+<text x="150" y="71" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#d2d2d2" text-anchor="start" xml:space="preserve">mA</text>
+<text x="5" y="95" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">R 402 Ohm</text>
+<text x="125" y="95" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">U 12.6 V</text>
+<text x="5" y="117" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">t = 14.20 s</text>
+<text x="130" y="117" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">dI -1.84  0/3</text>
+<rect x="5.5" y="128.5" width="229" height="5" fill="none" stroke="#7b7d7b" stroke-width="1"/>
+<rect x="5" y="128" width="73" height="6" fill="#00ff00"/>
+</g>
+<text x="532" y="336" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">heat</text>
+<text x="532" y="351" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">Heating. dI is the slope, 2/3 the quiet windows so far.</text>
+<rect x="1034" y="44" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(1038,48) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#0000ff"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">COOLING (AIR)</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">FIELD</text>
+<text x="5" y="63" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="37" fill="#ffffff" text-anchor="start" xml:space="preserve">241</text>
+<text x="150" y="71" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#d2d2d2" text-anchor="start" xml:space="preserve">Ohm</text>
+<text x="5" y="95" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">target &lt; 124 Ohm</text>
+<text x="5" y="117" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">t = 0.10 s</text>
+<text x="125" y="117" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#00ffff" text-anchor="start" xml:space="preserve">tau63 = 0.06 s</text>
+</g>
+<text x="1038" y="336" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">cool</text>
+<text x="1038" y="351" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">Air cooling, FIELD mode. R rather than I, because R says more here.</text>
+<rect x="22" y="376" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(26,380) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#007d00"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">RESULT</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">FIELD</text>
+<text x="5" y="41" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">Heat-up</text>
+<text x="115" y="47" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#00ff00" text-anchor="start" xml:space="preserve">26.2 s</text>
+<text x="5" y="73" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">tau63 air</text>
+<text x="115" y="79" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#00ffff" text-anchor="start" xml:space="preserve">0.06 s</text>
+<text x="5" y="103" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">cold after 2 s</text>
+<text x="5" y="123" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">R cold 118  hot 630 Ohm</text>
+</g>
+<text x="26" y="668" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">result_field</text>
+<text x="26" y="683" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">FIELD result. tau63 and time back to cold, no pass/fail.</text>
+<rect x="528" y="376" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(532,380) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#00ffff"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">IMMERSE NOW</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">SHOP</text>
+<text x="5" y="63" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="37" fill="#ffffff" text-anchor="start" xml:space="preserve">24.1</text>
+<text x="150" y="71" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#d2d2d2" text-anchor="start" xml:space="preserve">mA</text>
+<text x="5" y="95" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">R 630 Ohm</text>
+<text x="125" y="95" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">U 15.2 V</text>
+<text x="5" y="117" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">t = 3.04 s</text>
+<text x="125" y="117" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffff00" text-anchor="start" xml:space="preserve">target &gt; 46.6 mA</text>
+</g>
+<text x="532" y="668" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">hold</text>
+<text x="532" y="683" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">Shop mode. Current stays on, immerse the probe now.</text>
+<rect x="1034" y="376" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(1038,380) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#0000ff"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">COOLING</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">SHOP</text>
+<text x="5" y="63" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="37" fill="#ffffff" text-anchor="start" xml:space="preserve">38.7</text>
+<text x="150" y="71" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#d2d2d2" text-anchor="start" xml:space="preserve">mA</text>
+<text x="5" y="95" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">R 302 Ohm</text>
+<text x="125" y="95" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">U 11.7 V</text>
+<text x="5" y="117" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">t = 0.62 s</text>
+<text x="125" y="117" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffff00" text-anchor="start" xml:space="preserve">target &gt; 46.6 mA</text>
+<rect x="5.5" y="128.5" width="229" height="5" fill="none" stroke="#7b7d7b" stroke-width="1"/>
+<rect x="5" y="128" width="95" height="6" fill="#00ff00"/>
+</g>
+<text x="1038" y="668" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">trip</text>
+<text x="1038" y="683" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">Shutoff measurement running. Bar runs against 1.5 s.</text>
+<rect x="22" y="708" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(26,712) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#007d00"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">RESULT</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">SHOP</text>
+<text x="5" y="41" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">Heat-up</text>
+<text x="115" y="47" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#00ff00" text-anchor="start" xml:space="preserve">26.2 s</text>
+<text x="5" y="73" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">Shutoff</text>
+<text x="115" y="79" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#00ff00" text-anchor="start" xml:space="preserve">0.84 s</text>
+<text x="5" y="107" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">R cold 118  hot 630 Ohm</text>
+<text x="5" y="125" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#00ff00" text-anchor="start" xml:space="preserve">PASS</text>
+</g>
+<text x="26" y="1000" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">result_shop</text>
+<text x="26" y="1015" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">SHOP result with a verdict.</text>
+<rect x="528" y="708" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(532,712) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#7b007b"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">DIAGNOSTICS</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">DIAG</text>
+<text x="5" y="37" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">ADC A     1732 mV</text>
+<text x="5" y="55" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">ADC Sup   1741 mV</text>
+<text x="5" y="77" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffff00" text-anchor="start" xml:space="preserve">U_A 12.74 V   Vsup 18.91 V</text>
+<text x="5" y="99" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#00ffff" text-anchor="start" xml:space="preserve">I  39.15 mA   R     325 Ohm</text>
+<text x="5" y="125" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">switch ON - button = exit</text>
+</g>
+<text x="532" y="1000" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">diag</text>
+<text x="532" y="1015" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">Diagnostics. Raw ADC values, switch permanently on.</text>
+<rect x="1034" y="708" width="488" height="278" rx="7" fill="#2a2f33"/>
+<g transform="translate(1038,712) scale(2)">
+<rect width="240" height="135" fill="#000000"/>
+<rect x="0" y="0" width="240" height="22" fill="#ff0000"/>
+<text x="5" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="start" xml:space="preserve">FAULT</text>
+<text x="235" y="15" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#ffffff" text-anchor="end" xml:space="preserve">FIELD</text>
+<text x="5" y="59" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="20" fill="#ff0000" text-anchor="start" xml:space="preserve">no probe / open</text>
+<text x="5" y="91" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">R = 99100 Ohm   I = 0.2 mA</text>
+<text x="5" y="125" font-family="DejaVu Sans Mono, SF Mono, Menlo, Consolas, monospace" font-size="12" fill="#d2d2d2" text-anchor="start" xml:space="preserve">button = new test</text>
+</g>
+<text x="1038" y="1000" font-family="Inter,system-ui,sans-serif" font-size="12" font-weight="600" fill="#1b2a33">fault</text>
+<text x="1038" y="1015" font-family="Inter,system-ui,sans-serif" font-size="11" fill="#5c6b74">Fault screen. No probe connected.</text>
+</svg>

@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GWG Report</title>
+<!--
+  GWG test report generator.
+
+  Reads a measurement log from the tester over Web Serial (or from a file)
+  and writes an A4 test report as PDF.
+
+  No build step, no dependencies, no network access. Everything including
+  the PDF writer is in this one file, so a copy taken today still works in
+  five years on a machine that has never seen a package registry.
+
+  Browser support: Web Serial needs Chrome, Edge or Opera over https or
+  from file://. Any browser can open a saved .log file instead.
+-->
+<style>
+  :root{
+    --bg:#f4f1ea; --panel:#ffffff; --ink:#1b2a33; --muted:#5c6b74;
+    --line:#d8d2c6; --accent:#0a6a7a; --accent2:#c2410c;
+    --ok:#15803d; --bad:#b91c1c; --radius:6px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#14191c; --panel:#1c2429; --ink:#e7ecef; --muted:#9aa8b0;
+      --line:#2f3a41; --accent:#3fb6c8; --accent2:#f08a4b;
+      --ok:#4ade80; --bad:#f87171;
+    }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:15px/1.5 "Inter",system-ui,-apple-system,"Segoe UI",sans-serif;
+  }
+  header{
+    padding:18px 16px 14px; border-bottom:1px solid var(--line);
+    background:var(--panel);
+  }
+  header h1{margin:0; font-size:19px; letter-spacing:-0.01em}
+  header p{margin:3px 0 0; color:var(--muted); font-size:13px}
+  .wrap{max-width:1280px; margin:0 auto; padding:16px}
+  .cols{display:grid; grid-template-columns:400px 1fr; gap:16px}
+  @media(max-width:900px){.cols{grid-template-columns:1fr}}
+  .card{
+    background:var(--panel); border:1px solid var(--line);
+    border-radius:var(--radius); padding:14px; margin-bottom:14px;
+  }
+  .card h2{
+    margin:0 0 10px; font-size:12px; text-transform:uppercase;
+    letter-spacing:.08em; color:var(--muted); font-weight:600;
+  }
+  label{display:block; font-size:12px; color:var(--muted); margin:8px 0 3px}
+  input,select,textarea{
+    width:100%; padding:7px 9px; font:inherit; font-size:13px;
+    background:var(--bg); color:var(--ink);
+    border:1px solid var(--line); border-radius:4px;
+  }
+  textarea{min-height:76px; resize:vertical; font-size:12px;
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  .row{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+  button{
+    font:inherit; font-size:14px; padding:9px 14px; border-radius:4px;
+    border:1px solid var(--accent); background:var(--accent); color:#fff;
+    cursor:pointer;
+  }
+  button.ghost{background:transparent; color:var(--ink); border-color:var(--line)}
+  button:disabled{opacity:.45; cursor:not-allowed}
+  .btns{display:flex; gap:8px; flex-wrap:wrap; margin-top:12px}
+  #log{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11.5px; line-height:1.45; white-space:pre-wrap;
+    max-height:260px; overflow:auto; background:var(--bg);
+    border:1px solid var(--line); border-radius:4px; padding:9px;
+    color:var(--muted);
+  }
+  table.sum{width:100%; border-collapse:collapse; font-size:13px}
+  table.sum td{padding:5px 2px; border-bottom:1px solid var(--line)}
+  table.sum td:first-child{color:var(--muted)}
+  table.sum td:last-child{text-align:right; font-variant-numeric:tabular-nums}
+  .pill{
+    display:inline-block; padding:1px 7px; border-radius:99px;
+    font-size:11px; font-weight:600;
+  }
+  .pill.ok{background:color-mix(in srgb,var(--ok) 18%,transparent); color:var(--ok)}
+  .pill.bad{background:color-mix(in srgb,var(--bad) 18%,transparent); color:var(--bad)}
+  .pill.na{background:color-mix(in srgb,var(--muted) 16%,transparent); color:var(--muted)}
+  iframe{
+    width:100%; height:760px; border:1px solid var(--line);
+    border-radius:4px; background:#fff;
+  }
+  .hint{font-size:12px; color:var(--muted); margin-top:8px}
+  .err{color:var(--bad); font-size:13px; margin-top:8px}
+  .status{font-size:12px; color:var(--muted)}
+  .status b{color:var(--ink); font-weight:600}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap" style="padding:0 16px">
+    <h1>GWG&nbsp;Report<span style="color:var(--muted);font-weight:400">
+      &nbsp;— Grenzwertgeber / overfill prevention sensor</span></h1>
+    <p>Reads the tester over Web Serial and writes an A4 test report as PDF.
+       Works offline, no dependencies.</p>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="cols">
+
+  <!-- ---------------------------------------------------------- left -->
+  <div>
+    <div class="card">
+      <h2>1 · Daten / data</h2>
+      <div class="btns">
+        <button id="btnConnect">Serial verbinden</button>
+        <button id="btnFile" class="ghost">Logdatei öffnen</button>
+      </div>
+      <input type="file" id="file" accept=".log,.txt,.csv" hidden>
+      <div class="hint" id="serialHint"></div>
+      <label>Log</label>
+      <div id="log">Noch keine Daten.</div>
+      <div class="btns">
+        <button id="btnSave" class="ghost" disabled>Log speichern</button>
+        <button id="btnClear" class="ghost">Leeren</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>2 · Prüfobjekt / unit under test</h2>
+      <div class="row">
+        <div><label>Typ</label><input id="f_type" placeholder="z. B. GWG 4"></div>
+        <div><label>Hersteller</label><input id="f_maker"></div>
+      </div>
+      <div class="row">
+        <div><label>Serien-Nr.</label><input id="f_serial"></div>
+        <div><label>Baujahr</label><input id="f_year"></div>
+      </div>
+      <label>Anlage / Einbauort</label><input id="f_site">
+    </div>
+
+    <div class="card">
+      <h2>3 · Prüfbedingungen / conditions</h2>
+      <div class="row">
+        <div><label>Datum</label><input id="f_date" type="date"></div>
+        <div><label>Uhrzeit</label><input id="f_time" type="time"></div>
+      </div>
+      <div class="row">
+        <div><label>Umgebungstemperatur °C</label><input id="f_temp" value="21.0"></div>
+        <div><label>rel. Feuchte %</label><input id="f_rh" value="60"></div>
+      </div>
+      <div class="row">
+        <div><label>Prüfer</label><input id="f_tester"></div>
+        <div><label>Bericht-Nr.</label><input id="f_report"></div>
+      </div>
+      <label>Messmittel und Rückführung</label>
+      <textarea id="f_equip"></textarea>
+    </div>
+
+    <div class="card">
+      <h2>4 · Bericht / report</h2>
+      <label>Sprache / language</label>
+      <select id="f_lang">
+        <option value="de">Deutsch</option>
+        <option value="en">English</option>
+      </select>
+      <label>Bemerkungen / remarks</label>
+      <textarea id="f_remarks"></textarea>
+      <div class="btns">
+        <button id="btnPdf" disabled>PDF erzeugen</button>
+        <button id="btnDl" class="ghost" disabled>Herunterladen</button>
+      </div>
+      <div class="err" id="err"></div>
+    </div>
+  </div>
+
+  <!-- --------------------------------------------------------- right -->
+  <div>
+    <div class="card">
+      <h2>Messwerte / parsed values</h2>
+      <table class="sum"><tbody id="summary">
+        <tr><td colspan="2" style="color:var(--muted)">Keine Daten geladen.</td></tr>
+      </tbody></table>
+    </div>
+    <div class="card">
+      <h2>Vorschau / preview</h2>
+      <iframe id="preview" title="PDF preview"></iframe>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+"use strict";
+
+/* ==========================================================================
+   1  Minimal PDF writer
+   --------------------------------------------------------------------------
+   Enough of PDF 1.4 for a technical report: the 14 base fonts with
+   WinAnsiEncoding, lines, rectangles, polylines and text. Vector all the
+   way through -- the curves stay sharp at any zoom and the file stays
+   small, which a rasterised chart would not.
+
+   Coordinates are given top-left down, like every other drawing API, and
+   flipped on the way into the content stream.
+   ========================================================================== */
+
+const W_HELV = (()=> {            // AFM widths /1000, codes 32..126
+  const s = "278 278 355 556 556 889 667 191 333 333 389 584 278 333 278 278 "
+          + "556 556 556 556 556 556 556 556 556 556 278 278 584 584 584 556 "
+          + "1015 667 667 722 722 667 611 778 722 278 500 667 556 833 722 778 "
+          + "667 778 722 667 611 722 667 944 667 667 611 278 278 278 469 556 "
+          + "333 556 556 500 556 556 278 556 556 222 222 500 222 833 556 556 "
+          + "556 556 333 500 278 556 500 722 500 500 500 334 260 334 584";
+  return s.split(" ").map(Number);
+})();
+const W_HELVB = (()=> {
+  const s = "278 333 474 556 556 889 722 238 333 333 389 584 278 333 278 278 "
+          + "556 556 556 556 556 556 556 556 556 556 333 333 584 584 584 611 "
+          + "975 722 722 722 722 667 611 778 722 278 556 722 611 833 722 778 "
+          + "667 778 722 667 611 722 667 944 667 667 611 333 278 333 584 556 "
+          + "333 556 611 556 611 556 333 611 611 278 278 556 278 889 611 611 "
+          + "611 611 389 556 333 611 556 778 556 556 500 389 280 389 584";
+  return s.split(" ").map(Number);
+})();
+// A few WinAnsi codes above 127 that a German report actually uses.
+const W_HIGH_HELV = {0xA7:556,0xB0:400,0xB1:584,0xB5:556,0xD6:778,0xDC:722,
+  0xC4:667,0xDF:611,0xE4:556,0xF6:556,0xFC:556,0x96:556,0x97:1000,0x2D:333};
+const W_HIGH_HELVB = {0xA7:556,0xB0:400,0xB1:584,0xB5:611,0xD6:778,0xDC:722,
+  0xC4:722,0xDF:611,0xE4:556,0xF6:611,0xFC:611,0x96:556,0x97:1000,0x2D:333};
+
+// Unicode -> WinAnsi for the handful of characters outside Latin-1.
+const WINANSI_MAP = {0x2013:0x96,0x2014:0x97,0x2018:0x91,0x2019:0x92,
+  0x201C:0x93,0x201D:0x94,0x2022:0x95,0x2026:0x85,0x20AC:0x80};
+
+function toWinAnsi(str){
+  const out = [];
+  for (const ch of str){
+    let c = ch.codePointAt(0);
+    if (WINANSI_MAP[c] !== undefined) c = WINANSI_MAP[c];
+    else if (c > 255) c = 0x3F;              // '?' rather than a broken glyph
+    out.push(c);
+  }
+  return out;
+}
+
+class PDF {
+  constructor(w, h){
+    this.w = w; this.h = h;
+    this.pages = [];
+    this.cur = null;
+    this.page();
+  }
+  page(){ this.cur = []; this.pages.push(this.cur); return this; }
+
+  // ---- helpers ----
+  _y(y){ return this.h - y; }
+  _col(c){ // "#rrggbb" -> "r g b"
+    const n = parseInt(c.slice(1), 16);
+    return [((n>>16)&255)/255, ((n>>8)&255)/255, (n&255)/255]
+      .map(v => v.toFixed(3)).join(" ");
+  }
+  width(str, size, bold){
+    const wt = bold ? W_HELVB : W_HELV;
+    const hi = bold ? W_HIGH_HELVB : W_HIGH_HELV;
+    let t = 0;
+    for (const c of toWinAnsi(str)){
+      t += (c >= 32 && c <= 126) ? wt[c-32] : (hi[c] !== undefined ? hi[c] : 556);
+    }
+    return t * size / 1000;
+  }
+
+  // ---- drawing ----
+  line(x1,y1,x2,y2,o={}){
+    const c = this._col(o.color || "#1b2a33");
+    this.cur.push(`q ${o.w||0.6} w ${c} RG`
+      + (o.dash ? ` [${o.dash}] 0 d` : "")
+      + ` ${x1.toFixed(2)} ${this._y(y1).toFixed(2)} m`
+      + ` ${x2.toFixed(2)} ${this._y(y2).toFixed(2)} l S Q`);
+    return this;
+  }
+  rect(x,y,w,h,o={}){
+    const p = [`q ${o.w||0.6} w`];
+    if (o.fill)   p.push(`${this._col(o.fill)} rg`);
+    if (o.stroke) p.push(`${this._col(o.stroke)} RG`);
+    p.push(`${x.toFixed(2)} ${this._y(y+h).toFixed(2)} ${w.toFixed(2)} ${h.toFixed(2)} re`);
+    p.push(o.fill && o.stroke ? "B" : (o.fill ? "f" : "S"));
+    p.push("Q");
+    this.cur.push(p.join(" "));
+    return this;
+  }
+  poly(pts,o={}){
+    if (pts.length < 2) return this;
+    const c = this._col(o.color || "#1b2a33");
+    const p = [`q ${o.w||0.8} w ${c} RG 1 j 1 J`];
+    if (o.dash) p.push(`[${o.dash}] 0 d`);
+    pts.forEach((pt,i) => p.push(
+      `${pt[0].toFixed(2)} ${this._y(pt[1]).toFixed(2)} ${i ? "l" : "m"}`));
+    p.push("S Q");
+    this.cur.push(p.join(" "));
+    return this;
+  }
+  dot(x,y,r,color){
+    // circle from four Beziers
+    const k = 0.5523 * r, Y = this._y(y);
+    this.cur.push(`q ${this._col(color)} rg `
+      + `${(x-r).toFixed(2)} ${Y.toFixed(2)} m `
+      + `${(x-r).toFixed(2)} ${(Y+k).toFixed(2)} ${(x-k).toFixed(2)} ${(Y+r).toFixed(2)} ${x.toFixed(2)} ${(Y+r).toFixed(2)} c `
+      + `${(x+k).toFixed(2)} ${(Y+r).toFixed(2)} ${(x+r).toFixed(2)} ${(Y+k).toFixed(2)} ${(x+r).toFixed(2)} ${Y.toFixed(2)} c `
+      + `${(x+r).toFixed(2)} ${(Y-k).toFixed(2)} ${(x+k).toFixed(2)} ${(Y-r).toFixed(2)} ${x.toFixed(2)} ${(Y-r).toFixed(2)} c `
+      + `${(x-k).toFixed(2)} ${(Y-r).toFixed(2)} ${(x-r).toFixed(2)} ${(Y-k).toFixed(2)} ${(x-r).toFixed(2)} ${Y.toFixed(2)} c f Q`);
+    return this;
+  }
+  text(x,y,str,o={}){
+    const size = o.size || 9;
+    const bold = !!o.bold;
+    const mono = !!o.mono;
+    const font = mono ? "/F3" : (bold ? "/F2" : "/F1");
+    let tx = x;
+    if (o.align === "r") tx = x - this.width(str, size, bold);
+    if (o.align === "c") tx = x - this.width(str, size, bold)/2;
+    const esc = toWinAnsi(str).map(c =>
+      (c === 40 || c === 41 || c === 92) ? "\\" + String.fromCharCode(c)
+      : (c < 32 || c > 126) ? "\\" + c.toString(8).padStart(3,"0")
+      : String.fromCharCode(c)).join("");
+    this.cur.push(`BT ${this._col(o.color || "#1b2a33")} rg ${font} ${size} Tf`
+      + ` ${tx.toFixed(2)} ${(this._y(y)).toFixed(2)} Td (${esc}) Tj ET`);
+    return this;
+  }
+
+  // ---- output ----
+  save(){
+    const enc = s => { const a = new Uint8Array(s.length);
+      for (let i=0;i<s.length;i++) a[i] = s.charCodeAt(i) & 255; return a; };
+    const chunks = [], offs = [];
+    let len = 0;
+    const put = s => { const b = enc(s); chunks.push(b); len += b.length; };
+    const obj = (n, body) => { offs[n] = len; put(`${n} 0 obj\n${body}\nendobj\n`); };
+
+    put("%PDF-1.4\n%\xE2\xE3\xCF\xD3\n");
+    const nPages = this.pages.length;
+    const firstContent = 5;
+    const firstPage = firstContent + nPages;
+
+    obj(1, `<< /Type /Catalog /Pages 2 0 R >>`);
+    const kids = this.pages.map((_,i) => `${firstPage+i} 0 R`).join(" ");
+    obj(2, `<< /Type /Pages /Kids [${kids}] /Count ${nPages} >>`);
+    obj(3, `<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica `
+         + `/Encoding /WinAnsiEncoding >>`);
+    obj(4, `<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold `
+         + `/Encoding /WinAnsiEncoding >>`);
+    this.pages.forEach((p,i) => {
+      const s = p.join("\n");
+      obj(firstContent+i, `<< /Length ${s.length} >>\nstream\n${s}\nendstream`);
+    });
+    this.pages.forEach((_,i) => {
+      obj(firstPage+i,
+        `<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${this.w.toFixed(2)} ${this.h.toFixed(2)}] `
+        + `/Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 ${firstPage+nPages} 0 R >> >> `
+        + `/Contents ${firstContent+i} 0 R >>`);
+    });
+    obj(firstPage+nPages, `<< /Type /Font /Subtype /Type1 /BaseFont /Courier `
+         + `/Encoding /WinAnsiEncoding >>`);
+
+    const maxObj = firstPage + nPages;
+    const xrefAt = len;
+    let xref = `xref\n0 ${maxObj+1}\n0000000000 65535 f \n`;
+    for (let n=1; n<=maxObj; n++)
+      xref += String(offs[n]).padStart(10,"0") + " 00000 n \n";
+    put(xref);
+    put(`trailer\n<< /Size ${maxObj+1} /Root 1 0 R >>\nstartxref\n${xrefAt}\n%%EOF\n`);
+
+    const out = new Uint8Array(len);
+    let o = 0;
+    for (const c of chunks){ out.set(c, o); o += c.length; }
+    return out;
+  }
+}
+
+/* ==========================================================================
+   2  Log parser
+   --------------------------------------------------------------------------
+   Two header dialects are accepted:
+     proto 2  "# key=value", phase tokens in English, prose behind "## "
+     proto 1  German prose headers, phase token "AUFHEIZEN"
+   The second one exists because logs recorded before the protocol was
+   fixed must stay readable. A report generator that cannot read the
+   measurements already taken is of no use.
+   ========================================================================== */
+
+const PHASE_ALIAS = {
+  "AUFHEIZEN":"HEAT", "HEATING":"HEAT",
+  "ABKUEHLEN":"TRIP", "COOLING":"TRIP",
+  "ABKUEHLEN (LUFT)":"COOL", "COOLING (AIR)":"COOL",
+  "BEREIT":"IDLE", "READY":"IDLE",
+  "JETZT EINTAUCHEN":"HOLD", "IMMERSE NOW":"HOLD",
+  "ERGEBNIS":"RESULT", "FEHLER":"FAULT",
+};
+
+function num(x){ const v = parseFloat(x); return Number.isFinite(v) ? v : null; }
+
+function parseLog(text){
+  const m = {};                       // metadata
+  const rows = [];
+  let proto = 1;
+
+  for (const raw of text.split(/\r?\n/)){
+    const line = raw.trim();
+    if (!line) continue;
+
+    if (line.startsWith("##")) continue;              // localised prose
+
+    if (line.startsWith("#")){
+      const body = line.slice(1).trim();
+
+      // --- proto 2: key=value ---
+      const kv = body.match(/^([a-z0-9_]+)=(.*)$/);
+      if (kv){
+        proto = 2;
+        const k = kv[1], v = kv[2].trim();
+        m[k] = /^-?\d+(\.\d+)?$/.test(v) ? parseFloat(v) : v;
+        continue;
+      }
+
+      // --- proto 1: German prose ---
+      let r;
+      if ((r = body.match(/gainA\s*=\s*([\d.]+)/)))        m.gain_a = num(r[1]);
+      if ((r = body.match(/^START\s*\[(\w+)\]/))){
+        m.mode = {FELD:"FIELD", WERKSTATT:"SHOP", DIAG:"DIAG"}[r[1]] || r[1];
+      }
+      if ((r = body.match(/R_kalt\s*=\s*([\d.]+)/)))       m.r_cold_ohm = num(r[1]);
+      if ((r = body.match(/I_kalt\s*=\s*([\d.]+)/)))       m.i_cold_ma = num(r[1]);
+      if ((r = body.match(/Vsup\s*=\s*([\d.]+)/)))         m.vsup_v = num(r[1]);
+      if ((r = body.match(/AUFHEIZZEIT\s*=\s*(\d+)/)))     m.t_heat_ms = num(r[1]);
+      if ((r = body.match(/I_heiss\s*=\s*([\d.]+)/)))      m.i_hot_ma = num(r[1]);
+      if ((r = body.match(/R_heiss\s*=\s*([\d.]+)/)))      m.r_hot_ohm = num(r[1]);
+      if ((r = body.match(/TRIP-SCHWELLE\s*=\s*([\d.]+)/)))m.i_trip_ma = num(r[1]);
+      if ((r = body.match(/R63\s*=\s*([\d.]+)/)))          m.r63_ohm = num(r[1]);
+      if ((r = body.match(/TAU63\s*=\s*(\d+)/))){ m.tau63_ms = num(r[1]); m.tau63_valid = 1; }
+      if (/TAU63 NICHT AUFGELOEST/.test(body)){
+        m.tau63_valid = 0;
+        if ((r = body.match(/\((\d+) ms\)/))) m.tau63_bound_ms = num(r[1]);
+      }
+      if ((r = body.match(/WIEDER KALT nach\s*(\d+)/)))    m.t_back_cold_ms = num(r[1]);
+      if ((r = body.match(/ABSCHALTZEIT\s*=\s*(\d+)/)))    m.t_trip_ms = num(r[1]);
+      if ((r = body.match(/MESSPULS gemessen:\s*([\d.]+) ms ein, Raster (\d+) ms/))){
+        m.pulse_on_ms = num(r[1]); m.pulse_period_ms = num(r[2]);
+        m.duty = m.pulse_on_ms / m.pulse_period_ms;
+      }
+      if (/WARNUNG: Duty/.test(body) || /duty_warn/.test(body)) m.duty_warn = 1;
+      if (/TIMEOUT/i.test(body)) m.cool_timeout = 1;
+      continue;
+    }
+
+    // --- data row ---
+    const f = line.split(";");
+    if (f.length !== 6) continue;
+    const t = num(f[0]);
+    if (t === null) continue;
+    const ph = PHASE_ALIAS[f[1]] || f[1];
+    rows.push({ t, phase: ph, uA: num(f[2]), vsup: num(f[3]),
+                i: num(f[4]), r: num(f[5]) });
+  }
+
+  m.proto = proto;
+  return { meta: m, rows };
+}
+
+/* ==========================================================================
+   3  Charts, drawn straight into the PDF
+   ========================================================================== */
+
+function niceTicks(lo, hi, want){
+  if (!(hi > lo)) return [lo];
+  const raw = (hi - lo) / want;
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const n = raw / mag;
+  const step = (n <= 1 ? 1 : n <= 2 ? 2 : n <= 5 ? 5 : 10) * mag;
+  const out = [];
+  for (let v = Math.ceil(lo/step)*step; v <= hi + step*1e-9; v += step)
+    out.push(Math.round(v/step)*step);
+  return out;
+}
+
+// The decimal separator follows the report language: a German test report
+// with "26.2 s" in it looks like it was written by a tool that did not care.
+let NUM_LOCALE = "de-DE";
+function fmt(v, d){ return v.toLocaleString(NUM_LOCALE,
+  {minimumFractionDigits:d, maximumFractionDigits:d}); }
+
+const INK = "#1b2a33", MUTED = "#5c6b74", GRID = "#e2e0d8";
+const C_I = "#c2410c", C_R = "#0a6a7a", C_MARK = "#7c3aed";
+
+/*
+  Two y axes on one frame. The left one carries the first series, the right
+  one the second; each axis is drawn in its series' colour so the reader
+  never has to guess which scale a curve belongs to.
+*/
+function chart(doc, box, opt){
+  const {x, y, w, h} = box;
+  const xs = opt.series.flatMap(s => s.pts.map(p => p[0]));
+  const x0 = opt.xmin !== undefined ? opt.xmin : Math.min(...xs);
+  const x1 = opt.xmax !== undefined ? opt.xmax : Math.max(...xs);
+
+  const axes = opt.axes.map(a => {
+    const vs = opt.series.filter(s => s.axis === a.key).flatMap(s => s.pts.map(p => p[1]));
+    let lo = a.min !== undefined ? a.min : Math.min(...vs);
+    let hi = a.max !== undefined ? a.max : Math.max(...vs);
+    if (hi === lo) hi = lo + 1;
+    const pad = (hi - lo) * 0.08;
+    lo = a.min !== undefined ? a.min : lo - pad;
+    hi = a.max !== undefined ? a.max : hi + pad;
+    const ticks = niceTicks(lo, hi, 5);
+    return {...a, lo, hi, ticks};
+  });
+
+  const px = v => x + (v - x0) / (x1 - x0) * w;
+  const py = (v, a) => y + h - (v - a.lo) / (a.hi - a.lo) * h;
+
+  // frame
+  doc.rect(x, y, w, h, {stroke:"#c9c5ba", w:0.6});
+
+  // x grid and labels
+  for (const t of niceTicks(x0, x1, 6)){
+    const X = px(t);
+    if (X < x - 0.1 || X > x + w + 0.1) continue;
+    doc.line(X, y, X, y+h, {color:GRID, w:0.4});
+    doc.text(X, y+h+10, fmt(t, opt.xdec||0), {size:7.5, align:"c", color:MUTED});
+  }
+  doc.text(x + w/2, y + h + 22, opt.xlabel, {size:8, align:"c", color:MUTED});
+
+  // y axes
+  axes.forEach((a, idx) => {
+    const right = idx > 0;
+    for (const t of a.ticks){
+      const Y = py(t, a);
+      if (Y < y - 0.1 || Y > y + h + 0.1) continue;
+      if (!right) doc.line(x, Y, x+w, Y, {color:GRID, w:0.4});
+      doc.line(right ? x+w : x, Y, right ? x+w+3 : x-3, Y, {color:a.color, w:0.5});
+      doc.text(right ? x+w+6 : x-6, Y+2.6, fmt(t, a.dec||0),
+               {size:7.5, align: right ? "l" : "r", color:a.color});
+    }
+    const lx = right ? x + w + 34 : x - 34;
+    doc.text(lx, y - 10, a.label, {size:8, align: right ? "r" : "l", color:a.color});
+  });
+
+  // series
+  for (const s of opt.series){
+    const a = axes.find(q => q.key === s.axis);
+    const pts = s.pts.map(p => [px(p[0]), py(p[1], a)]);
+    doc.poly(pts, {color:s.color, w:s.w || 1.0, dash:s.dash});
+    if (s.dots) for (const p of pts) doc.dot(p[0], p[1], 1.0, s.color);
+  }
+
+  // markers
+  for (const mk of (opt.marks || [])){
+    if (mk.x !== undefined){
+      const X = px(mk.x);
+      doc.line(X, y, X, y+h, {color:mk.color || C_MARK, w:0.7, dash:"2 2"});
+      const flip = X > x + w * 0.7;
+      doc.text(X + (flip ? -3 : 3), y + (mk.ty || 10), mk.label,
+               {size:7.5, align: flip ? "r" : "l",
+                color:mk.color || C_MARK, bold:true});
+    } else {
+      const a = axes.find(q => q.key === mk.axis);
+      const Y = py(mk.y, a);
+      doc.line(x, Y, x+w, Y, {color:mk.color || C_MARK, w:0.7, dash:"2 2"});
+      doc.text(x + w - 3, Y - 3, mk.label,
+               {size:7.5, align:"r", color:mk.color || C_MARK, bold:true});
+    }
+  }
+
+  // legend
+  let lx = x;
+  for (const s of opt.series){
+    doc.line(lx, y - 26, lx + 12, y - 26, {color:s.color, w:1.4, dash:s.dash});
+    doc.text(lx + 16, y - 23.5, s.name, {size:8, color:INK});
+    lx += 16 + doc.width(s.name, 8, false) + 16;
+  }
+}
+
+/* ==========================================================================
+   4  Report
+   ========================================================================== */
+
+const T = {
+  de:{
+    title:"PRÜFBERICHT", sub:"Grenzwertgeber (Kaltleiter) — Funktionsprüfung",
+    reportNo:"Bericht-Nr.", page:"Seite", of:"von",
+    s1:"1  Prüfobjekt", s2:"2  Prüfbedingungen", s3:"3  Ergebnis",
+    s4:"4  Aufheizkurve", s5:"5  Abkühlkurve in Luft",
+    s6:"6  Messverfahren und Messunsicherheit", s7:"7  Bemerkungen",
+    s8:"8  Bestätigung",
+    type:"Typ", maker:"Hersteller", serial:"Serien-Nr.", year:"Baujahr",
+    site:"Anlage / Einbauort",
+    date:"Datum", time:"Uhrzeit", temp:"Umgebungstemperatur",
+    rh:"relative Luftfeuchte", vsup:"Versorgungsspannung",
+    rser:"Vorwiderstand", modeL:"Prüfmodus", tester:"Prüfer",
+    equip:"Messmittel und Rückführung",
+    mode:{FIELD:"FELD — Fühler im Tank", SHOP:"WERKSTATT — Fühler ausgebaut",
+          DIAG:"DIAGNOSE"},
+    colQ:"Prüfgröße", colV:"Messwert", colL:"Anforderung", colR:"Bewertung",
+    qHeat:"Aufheizzeit bis thermisches Gleichgewicht",
+    qRCold:"Kaltwiderstand (Kurzpuls)", qRHot:"Warmwiderstand im Gleichgewicht",
+    qICold:"Kaltstrom", qIHot:"Warmstrom im Gleichgewicht",
+    qTau:"Zeitkonstante tau63 in Luft",
+    qBack:"Zeit bis zum Kaltwert in Luft",
+    qTrip:"Abschaltzeit nach Eintauchen",
+    limHeat:"max. 45 s", limTrip:"max. 1,5 s", noLimit:"kein Normwert",
+    pass:"bestanden", fail:"nicht bestanden", ref:"Referenzwert", na:"nicht geprüft",
+    verdictPass:"GESAMTBEWERTUNG: BESTANDEN",
+    verdictFail:"GESAMTBEWERTUNG: NICHT BESTANDEN",
+    verdictPart:"GESAMTBEWERTUNG: TEILPRÜFUNG — Abschaltzeit nicht geprüft",
+    xTime:"Zeit [s]", yI:"Strom [mA]", yR:"Widerstand [Ohm]",
+    legI:"Strom", legR:"Widerstand",
+    mSteady:"Gleichgewicht", mR63:"R63", mTau:"tau63",
+    notePulse:"Messpulse",
+    sig:"Die Prüfung wurde nach dem unter 6 beschriebenen Verfahren "
+      + "durchgeführt. Die aufgeführten Messwerte sind die unmittelbar "
+      + "aufgezeichneten Werte des Prüfgeräts.",
+    place:"Ort, Datum", signature:"Unterschrift Prüfer",
+    footNote:"Dieser Bericht dokumentiert eine Funktionsprüfung. Er ersetzt "
+      + "keine Abnahme nach TRwS / AwSV und keine Prüfung durch einen "
+      + "Sachverständigen.",
+  },
+  en:{
+    title:"TEST REPORT", sub:"Overfill prevention sensor (PTC) — functional test",
+    reportNo:"Report no.", page:"Page", of:"of",
+    s1:"1  Unit under test", s2:"2  Test conditions", s3:"3  Result",
+    s4:"4  Heating curve", s5:"5  Cooling curve in air",
+    s6:"6  Method and measurement uncertainty", s7:"7  Remarks",
+    s8:"8  Confirmation",
+    type:"Type", maker:"Manufacturer", serial:"Serial no.", year:"Year",
+    site:"Installation",
+    date:"Date", time:"Time", temp:"Ambient temperature",
+    rh:"Relative humidity", vsup:"Supply voltage",
+    rser:"Series resistor", modeL:"Test mode", tester:"Tested by",
+    equip:"Instruments and traceability",
+    mode:{FIELD:"FIELD — probe left in the tank",
+          SHOP:"SHOP — probe removed", DIAG:"DIAGNOSTICS"},
+    colQ:"Quantity", colV:"Measured", colL:"Requirement", colR:"Verdict",
+    qHeat:"Heat-up time to thermal equilibrium",
+    qRCold:"Cold resistance (short pulse)", qRHot:"Hot resistance at equilibrium",
+    qICold:"Cold current", qIHot:"Hot current at equilibrium",
+    qTau:"Time constant tau63 in air",
+    qBack:"Time back to the cold value in air",
+    qTrip:"Shutoff time after immersion",
+    limHeat:"max. 45 s", limTrip:"max. 1.5 s", noLimit:"no standard value",
+    pass:"pass", fail:"fail", ref:"reference", na:"not tested",
+    verdictPass:"OVERALL: PASS", verdictFail:"OVERALL: FAIL",
+    verdictPart:"OVERALL: PARTIAL — shutoff time not tested",
+    xTime:"Time [s]", yI:"Current [mA]", yR:"Resistance [Ohm]",
+    legI:"Current", legR:"Resistance",
+    mSteady:"equilibrium", mR63:"R63", mTau:"tau63",
+    notePulse:"measuring pulses",
+    sig:"The test was carried out using the method described in section 6. "
+      + "The values listed are those recorded directly by the test set.",
+    place:"Place, date", signature:"Signature",
+    footNote:"This report documents a functional test. It does not replace "
+      + "an acceptance test under TRwS / AwSV or an inspection by a "
+      + "qualified expert.",
+  }
+};
+
+const METHOD = {
+  de:[
+    "Der Kaltleiter wird über einen Vorwiderstand an eine Gleichspannung "
+    + "gelegt und low-side geschaltet. Gemessen werden zwei Spannungen: "
+    + "die Versorgung und der Knoten zwischen Vorwiderstand und Fühler. "
+    + "Beide Kanäle werden verschachtelt abgetastet, damit sich der "
+    + "Netzteilripple in der Differenz aufhebt. Der Strom ergibt sich zu "
+    + "I = (Vsup - U_A)/R_V - U_A/R_T, der Fühlerwiderstand zu R = U_A/I.",
+    "Die Aufheizphase endet nicht an einem festen Stromwert, sondern am "
+    + "thermischen Gleichgewicht: der Strom gilt als konstant, wenn seine "
+    + "Steigung über drei aufeinanderfolgende Sekunden unter 0,15 mA/s "
+    + "bleibt. Als Aufheizzeit wird der Beginn des ersten ruhigen Fensters "
+    + "gewertet, nicht das Ende des dritten.",
+    "In der Luftabkühlphase wird der Strom abgeschaltet und nur in kurzen "
+    + "Pulsen gemessen. Die Einschaltdauer wird im Gerät mit micros() "
+    + "gemessen und im Bericht ausgewiesen; oberhalb von 8 % heizen die "
+    + "Messpulse den Fühler nach und die Kurve ist nicht mehr gültig.",
+    "Die Abkühlkurve in Luft hat keinen Normwert. Sie ist ein "
+    + "reproduzierbarer Kennwert des einzelnen Fühlers und für den "
+    + "Vergleich gegen einen bekannt guten Fühler gleicher Bauart bestimmt.",
+    "Die Abschaltzeit nach Eintauchen lässt sich nur am ausgebauten "
+    + "Fühler bestimmen. Im Modus FELD wird sie nicht geprüft.",
+  ],
+  en:[
+    "The PTC probe is connected to a DC supply through a series resistor "
+    + "and switched on the low side. Two voltages are measured: the supply "
+    + "and the node between series resistor and probe. Both channels are "
+    + "sampled interleaved so that supply ripple cancels in the difference. "
+    + "The current follows as I = (Vsup - U_A)/R_s - U_A/R_d, the probe "
+    + "resistance as R = U_A/I.",
+    "The heating phase does not end at a fixed current but at thermal "
+    + "equilibrium: the current counts as constant once its slope stays "
+    + "below 0.15 mA/s over three consecutive seconds. The heat-up time is "
+    + "taken as the start of the first quiet window, not the end of the third.",
+    "During air cooling the current is switched off and measured only in "
+    + "short pulses. The on-time is measured in the instrument with "
+    + "micros() and stated in this report; above 8 % duty the measuring "
+    + "pulses reheat the probe and the curve is no longer valid.",
+    "The air cooling curve has no standard value. It is a reproducible "
+    + "characteristic of the individual probe, intended for comparison "
+    + "against a known good probe of the same type.",
+    "The shutoff time after immersion can only be determined with the "
+    + "probe removed. It is not tested in FIELD mode.",
+  ]
+};
+
+const A4 = {w:595.28, h:841.89};
+const M = {l:52, r:52, t:50, b:56};
+
+function hr(doc, y, color){ doc.line(M.l, y, A4.w - M.r, y, {color:color||"#c9c5ba", w:0.6}); }
+
+function section(doc, y, label){
+  doc.text(M.l, y, label, {size:10.5, bold:true});
+  hr(doc, y + 5, "#9aa39a");
+  return y + 18;
+}
+
+function kv(doc, y, rows, colW){
+  const x2 = M.l + (colW || 150);
+  for (const [k, v] of rows){
+    doc.text(M.l, y, k, {size:9, color:MUTED});
+    doc.text(x2, y, v, {size:9});
+    y += 14;
+  }
+  return y;
+}
+
+function buildReport(parsed, form){
+  const L = T[form.lang], meta = parsed.meta, rows = parsed.rows;
+  NUM_LOCALE = form.lang === "de" ? "de-DE" : "en-GB";
+  const doc = new PDF(A4.w, A4.h);
+  const CW = A4.w - M.l - M.r;
+
+  // ---------- helpers bound to this document ----------
+  const heat = rows.filter(r => r.phase === "HEAT");
+  const cool = rows.filter(r => r.phase === "COOL");
+  const trip = rows.filter(r => r.phase === "TRIP");
+
+  const sMode = meta.mode || (cool.length ? "FIELD" : "SHOP");
+  const tHeat = meta.t_heat_ms;
+  const tTrip = meta.t_trip_ms;
+  const okHeat = tHeat != null ? tHeat <= 45000 : null;
+  const okTrip = tTrip != null ? tTrip <= 1500 : null;
+
+  // ---------- page 1 ----------
+  let y = M.t;
+  doc.text(M.l, y, L.title, {size:17, bold:true});
+  doc.text(A4.w - M.r, y, `${L.reportNo} ${form.report}`, {size:9, align:"r", color:MUTED});
+  y += 15;
+  doc.text(M.l, y, L.sub, {size:10, color:MUTED});
+  y += 8;
+  hr(doc, y, "#1b2a33");
+  y += 24;
+
+  y = section(doc, y, L.s1);
+  y = kv(doc, y, [
+    [L.type,   form.type   || "—"],
+    [L.maker,  form.maker  || "—"],
+    [L.serial, form.serial || "—"],
+    [L.year,   form.year   || "—"],
+    [L.site,   form.site   || "—"],
+  ]);
+  y += 8;
+
+  y = section(doc, y, L.s2);
+  y = kv(doc, y, [
+    [`${L.date} / ${L.time}`, `${form.date}  ${form.time}`],
+    [L.temp,  form.temp ? `${form.temp} °C` : "—"],
+    [L.rh,    form.rh   ? `${form.rh} %`    : "—"],
+    [L.vsup,  meta.vsup_v != null ? `${fmt(meta.vsup_v,2)} V` : "—"],
+    [L.rser,  meta.r_series_ohm != null ? `${fmt(meta.r_series_ohm,1)} Ohm` : "159,1 Ohm"],
+    [L.modeL, L.mode[sMode] || sMode],
+    [L.tester, form.tester || "—"],
+  ]);
+  y += 2;
+  doc.text(M.l, y, L.equip, {size:9, color:MUTED});
+  y += 12;
+  y = wrapText(doc, M.l, y, CW, form.equip, 8.5, 11);
+  y += 10;
+
+  // ---------- result table ----------
+  y = section(doc, y, L.s3);
+  const col = [M.l, M.l + 232, M.l + 334, M.l + 420];
+  doc.rect(M.l, y - 10, CW, 15, {fill:"#eceae2"});
+  doc.text(col[0] + 4, y, L.colQ, {size:8.5, bold:true});
+  doc.text(col[1],     y, L.colV, {size:8.5, bold:true});
+  doc.text(col[2],     y, L.colL, {size:8.5, bold:true});
+  doc.text(col[3],     y, L.colR, {size:8.5, bold:true});
+  y += 16;
+
+  const line = (q, v, lim, verdict, color) => {
+    doc.text(col[0] + 4, y, q,   {size:9});
+    doc.text(col[1],     y, v,   {size:9});
+    doc.text(col[2],     y, lim, {size:9, color:MUTED});
+    if (verdict) doc.text(col[3], y, verdict, {size:9, bold:true, color:color||INK});
+    hr(doc, y + 5, "#e2e0d8");
+    y += 17;
+  };
+
+  line(L.qHeat,
+       tHeat != null ? `${fmt(tHeat/1000, 1)} s` : "—",
+       L.limHeat,
+       okHeat === null ? "—" : (okHeat ? L.pass : L.fail),
+       okHeat ? "#15803d" : "#b91c1c");
+  line(L.qRCold, meta.r_cold_ohm != null ? `${fmt(meta.r_cold_ohm,1)} Ohm` : "—", "—", "");
+  line(L.qRHot,  meta.r_hot_ohm  != null ? `${fmt(meta.r_hot_ohm,0)} Ohm`  : "—", "—", "");
+  line(L.qICold, meta.i_cold_ma  != null ? `${fmt(meta.i_cold_ma,2)} mA`   : "—", "—", "");
+  line(L.qIHot,  meta.i_hot_ma   != null ? `${fmt(meta.i_hot_ma,2)} mA`    : "—", "—", "");
+
+  if (sMode === "FIELD"){
+    const tv = meta.tau63_valid === 0 || meta.tau63_valid === "0";
+    const tau = tv
+      ? `< ${fmt((meta.tau63_bound_ms ?? meta.tau63_ms ?? 0)/1000, 3)} s`
+      : (meta.tau63_ms != null ? `${fmt(meta.tau63_ms/1000, 3)} s` : "—");
+    line(L.qTau, tau, L.noLimit, L.ref, MUTED);
+    line(L.qBack,
+         meta.t_back_cold_ms != null ? `${fmt(meta.t_back_cold_ms/1000, 2)} s` : "—",
+         L.noLimit, L.ref, MUTED);
+    line(L.qTrip, "—", L.limTrip, L.na, MUTED);
+  } else {
+    line(L.qTrip,
+         tTrip != null ? `${fmt(tTrip/1000, 2)} s` : "—",
+         L.limTrip,
+         okTrip === null ? "—" : (okTrip ? L.pass : L.fail),
+         okTrip ? "#15803d" : "#b91c1c");
+  }
+
+  // verdict band
+  y += 4;
+  const partial = sMode === "FIELD";
+  const good = okHeat !== false && okTrip !== false;
+  const vtxt = partial ? L.verdictPart : (good ? L.verdictPass : L.verdictFail);
+  const vcol = !good ? "#b91c1c" : (partial ? "#8a6b2b" : "#15803d");
+  doc.rect(M.l, y - 11, CW, 20, {
+    fill: !good ? "#fbeaea" : (partial ? "#faf3e2" : "#eaf5ec")});
+  doc.text(M.l + 8, y + 2, vtxt, {size:10, bold:true, color:vcol});
+  y += 30;
+
+  // ---------- heating chart ----------
+  y = section(doc, y, L.s4);
+  if (heat.length > 1){
+    chart(doc, {x:M.l + 36, y:y + 18, w:CW - 76, h:150}, {
+      xlabel:L.xTime, xdec:0,
+      axes:[
+        {key:"i", label:L.yI, color:C_I, dec:0, min:0},
+        {key:"r", label:L.yR, color:C_R, dec:0, min:0},
+      ],
+      series:[
+        {name:L.legI, axis:"i", color:C_I, w:1.0,
+         pts:decimate(heat.map(r => [r.t/1000, r.i]), 400)},
+        {name:L.legR, axis:"r", color:C_R, w:1.0,
+         pts:decimate(heat.map(r => [r.t/1000, r.r]), 400)},
+      ],
+      marks: tHeat != null
+        ? [{x:tHeat/1000, label:L.mSteady, color:C_MARK, ty:14}] : [],
+    });
+    y += 202;
+  } else {
+    doc.text(M.l, y, "—", {size:9, color:MUTED});
+    y += 16;
+  }
+
+  footer(doc, form, L, 1);
+
+  // ---------- page 2 ----------
+  doc.page();
+  y = M.t;
+  doc.text(M.l, y, L.title, {size:11, bold:true, color:MUTED});
+  doc.text(A4.w - M.r, y, `${L.reportNo} ${form.report}`, {size:9, align:"r", color:MUTED});
+  y += 6; hr(doc, y, "#c9c5ba"); y += 22;
+
+  y = section(doc, y, L.s5);
+  if (cool.length > 1){
+    const pts = cool.map(r => [r.t/1000, r.r]);
+    const marks = [];
+    if (meta.r63_ohm != null)
+      marks.push({axis:"r", y:meta.r63_ohm, label:`${L.mR63} = ${fmt(meta.r63_ohm,0)} Ohm`});
+    if (meta.tau63_ms != null && meta.tau63_valid !== 0)
+      marks.push({x:meta.tau63_ms/1000, label:`${L.mTau} = ${fmt(meta.tau63_ms/1000,3)} s`,
+                  color:C_MARK, ty:24});
+    chart(doc, {x:M.l + 36, y:y + 18, w:CW - 76, h:150}, {
+      xlabel:L.xTime, xdec:1, xmin:0,
+      axes:[{key:"r", label:L.yR, color:C_R, dec:0, min:0}],
+      series:[{name:L.legR, axis:"r", color:C_R, w:1.0, dots:true, pts}],
+      marks,
+    });
+    y += 208;
+    if (meta.pulse_on_ms != null){
+      doc.text(M.l, y, `${L.notePulse}: ${fmt(meta.pulse_on_ms,1)} ms / `
+        + `${fmt(meta.pulse_period_ms,0)} ms = `
+        + `${fmt((meta.duty ?? 0)*100, 1)} %`
+        + (meta.duty_warn ? "  (!)" : ""), {size:8.5, color:MUTED});
+      y += 18;
+    }
+  } else if (trip.length > 1){
+    chart(doc, {x:M.l + 36, y:y + 18, w:CW - 76, h:150}, {
+      xlabel:L.xTime, xdec:2, xmin:0,
+      axes:[{key:"i", label:L.yI, color:C_I, dec:0, min:0}],
+      series:[{name:L.legI, axis:"i", color:C_I, w:1.0, dots:true,
+               pts:trip.map(r => [r.t/1000, r.i])}],
+      marks: meta.i_trip_ma != null
+        ? [{axis:"i", y:meta.i_trip_ma,
+            label:`I trip = ${fmt(meta.i_trip_ma,1)} mA`}] : [],
+    });
+    y += 208;
+  } else {
+    doc.text(M.l, y, "—", {size:9, color:MUTED});
+    y += 16;
+  }
+
+  y += 6;
+  y = section(doc, y, L.s6);
+  for (const p of METHOD[form.lang]){
+    y = wrapText(doc, M.l, y, CW, p, 8.8, 11.6);
+    y += 7;
+  }
+
+  y += 4;
+  y = section(doc, y, L.s7);
+  y = wrapText(doc, M.l, y, CW,
+       form.remarks && form.remarks.trim() ? form.remarks : "—", 8.8, 11.6);
+
+  // signature block, pinned to the bottom
+  let sy = A4.h - M.b - 86;
+  sy = section(doc, sy, L.s8);
+  sy = wrapText(doc, M.l, sy, CW, L.sig, 8.8, 11.6);
+  sy += 26;
+  doc.line(M.l, sy, M.l + 190, sy, {color:"#9aa39a", w:0.6});
+  doc.line(M.l + 230, sy, M.l + 420, sy, {color:"#9aa39a", w:0.6});
+  doc.text(M.l, sy + 11, L.place, {size:8, color:MUTED});
+  doc.text(M.l + 230, sy + 11, L.signature, {size:8, color:MUTED});
+
+  footer(doc, form, L, 2);
+
+  // page numbers, now that the count is known
+  const n = doc.pages.length;
+  doc.pages.forEach((p, i) => {
+    const save = doc.cur;
+    doc.cur = p;
+    doc.text(A4.w - M.r, A4.h - M.b + 22, `${L.page} ${i+1} ${L.of} ${n}`,
+             {size:8, align:"r", color:MUTED});
+    doc.cur = save;
+  });
+
+  return doc;
+}
+
+function footer(doc, form, L, _n){
+  const y = A4.h - M.b + 10;
+  doc.line(M.l, y - 8, A4.w - M.r, y - 8, {color:"#c9c5ba", w:0.5});
+  doc.text(M.l, y + 4, L.footNote, {size:7, color:MUTED});
+  doc.text(M.l, y + 13, `${L.reportNo} ${form.report}`, {size:7, color:MUTED});
+}
+
+function wrapText(doc, x, y, w, text, size, lh){
+  for (const para of String(text).split(/\n/)){
+    if (!para.trim()){ y += lh * 0.6; continue; }
+    let lineStr = "";
+    for (const word of para.split(/\s+/)){
+      const t = lineStr ? lineStr + " " + word : word;
+      if (doc.width(t, size, false) > w && lineStr){
+        doc.text(x, y, lineStr, {size});
+        y += lh;
+        lineStr = word;
+      } else lineStr = t;
+    }
+    if (lineStr){ doc.text(x, y, lineStr, {size}); y += lh; }
+  }
+  return y;
+}
+
+/* Keeps the PDF small without changing what the curve shows: plain
+   stride-based thinning would drop local extremes, so each bucket keeps
+   its minimum and its maximum. */
+function decimate(pts, maxN){
+  if (pts.length <= maxN) return pts;
+  const bucket = Math.ceil(pts.length / (maxN / 2));
+  const out = [];
+  for (let i = 0; i < pts.length; i += bucket){
+    const seg = pts.slice(i, i + bucket);
+    let lo = seg[0], hi = seg[0];
+    for (const p of seg){ if (p[1] < lo[1]) lo = p; if (p[1] > hi[1]) hi = p; }
+    const [a, b] = lo[0] <= hi[0] ? [lo, hi] : [hi, lo];
+    out.push(a); if (b !== a) out.push(b);
+  }
+  return out;
+}
+
+/* ==========================================================================
+   5  UI
+   ========================================================================== */
+
+const $ = id => document.getElementById(id);
+let rawLog = "", parsed = null, pdfBytes = null, port = null, keepReading = false;
+
+const DEFAULT_EQUIP = {
+  de:"Spannungskette gegen Referenz-Multimeter kalibriert; Vorwiderstand "
+    + "durch direkte Strommessung bestimmt. Vor jedem Lauf wird der Kanal "
+    + "gegen die Versorgung genullt (Auto-Null). Restabweichung der "
+    + "Spannungskette ±0,04 V.",
+  en:"Voltage chain calibrated against a reference multimeter; series "
+    + "resistor determined by direct current measurement. The channel is "
+    + "zeroed against the supply before every run (auto-zero). Residual "
+    + "deviation of the voltage chain ±0.04 V.",
+};
+
+function init(){
+  const now = new Date();
+  $("f_date").value = now.toISOString().slice(0,10);
+  $("f_time").value = now.toTimeString().slice(0,5);
+  $("f_report").value = "GWG-" + now.toISOString().slice(0,10).replace(/-/g,"") + "-01";
+  $("f_equip").value = DEFAULT_EQUIP.de;
+
+  $("f_lang").onchange = () => {
+    const l = $("f_lang").value;
+    if ($("f_equip").value === DEFAULT_EQUIP.de || $("f_equip").value === DEFAULT_EQUIP.en)
+      $("f_equip").value = DEFAULT_EQUIP[l];
+  };
+
+  $("serialHint").textContent = "serial" in navigator
+    ? "Web Serial verfügbar. 115200 Baud."
+    : "Web Serial fehlt in diesem Browser — Logdatei öffnen statt verbinden.";
+  $("btnConnect").disabled = !("serial" in navigator);
+
+  $("btnFile").onclick = () => $("file").click();
+  $("file").onchange = async e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    setLog(await f.text());
+  };
+  $("btnConnect").onclick = connect;
+  $("btnClear").onclick = () => setLog("");
+  $("btnSave").onclick = () => download(
+    new Blob([rawLog], {type:"text/plain"}),
+    ($("f_report").value || "gwg") + ".log");
+  $("btnPdf").onclick = makePdf;
+  $("btnDl").onclick = () => pdfBytes && download(
+    new Blob([pdfBytes], {type:"application/pdf"}),
+    ($("f_report").value || "gwg") + ".pdf");
+}
+
+async function connect(){
+  try {
+    if (port){ keepReading = false; await port.close().catch(()=>{}); port = null;
+      $("btnConnect").textContent = "Serial verbinden"; return; }
+    port = await navigator.serial.requestPort();
+    await port.open({baudRate:115200});
+    $("btnConnect").textContent = "Trennen";
+    $("err").textContent = "";
+    keepReading = true;
+    const dec = new TextDecoderStream();
+    port.readable.pipeTo(dec.writable).catch(()=>{});
+    const reader = dec.readable.getReader();
+    let buf = "";
+    while (keepReading){
+      const {value, done} = await reader.read();
+      if (done) break;
+      buf += value;
+      const i = buf.lastIndexOf("\n");
+      if (i >= 0){ setLog(rawLog + buf.slice(0, i+1)); buf = buf.slice(i+1); }
+    }
+    reader.releaseLock();
+  } catch (e){
+    $("err").textContent = String(e.message || e);
+    port = null;
+    $("btnConnect").textContent = "Serial verbinden";
+  }
+}
+
+function setLog(text){
+  rawLog = text;
+  const el = $("log");
+  el.textContent = text || "Noch keine Daten.";
+  el.scrollTop = el.scrollHeight;
+  $("btnSave").disabled = !text;
+  parsed = text ? parseLog(text) : null;
+  renderSummary();
+  $("btnPdf").disabled = !(parsed && parsed.rows.length);
+}
+
+function pill(cls, t){ return `<span class="pill ${cls}">${t}</span>`; }
+
+function renderSummary(){
+  const tb = $("summary");
+  if (!parsed || !parsed.rows.length){
+    tb.innerHTML = '<tr><td colspan="2" style="color:var(--muted)">'
+      + 'Keine Daten geladen.</td></tr>';
+    return;
+  }
+  const m = parsed.meta;
+  const nHeat = parsed.rows.filter(r => r.phase === "HEAT").length;
+  const nCool = parsed.rows.filter(r => r.phase === "COOL").length;
+  const nTrip = parsed.rows.filter(r => r.phase === "TRIP").length;
+  const f = (v, d, u) => v == null ? "—" : fmt(v, d) + " " + u;
+
+  const rows = [
+    ["Protokoll", "Version " + m.proto],
+    ["Modus", m.mode || "—"],
+    ["Messpunkte", `${nHeat} HEAT · ${nCool} COOL · ${nTrip} TRIP`],
+    ["Versorgung", f(m.vsup_v, 2, "V")],
+    ["R kalt", f(m.r_cold_ohm, 1, "Ohm")],
+    ["R heiß", f(m.r_hot_ohm, 0, "Ohm")],
+    ["I kalt", f(m.i_cold_ma, 2, "mA")],
+    ["I heiß", f(m.i_hot_ma, 2, "mA")],
+    ["Aufheizzeit", m.t_heat_ms == null ? "—"
+      : fmt(m.t_heat_ms/1000, 1) + " s " + (m.t_heat_ms <= 45000
+        ? pill("ok","≤ 45 s") : pill("bad","> 45 s"))],
+    ["tau63 (Luft)", m.tau63_ms == null ? "—"
+      : (m.tau63_valid === 0 ? "< " : "") + fmt(m.tau63_ms/1000, 3) + " s "
+        + (m.tau63_valid === 0 ? pill("na","unaufgelöst") : "")],
+    ["Kalt nach", f(m.t_back_cold_ms == null ? null : m.t_back_cold_ms/1000, 2, "s")],
+    ["Abschaltzeit", m.t_trip_ms == null ? pill("na","nicht geprüft")
+      : fmt(m.t_trip_ms/1000, 2) + " s " + (m.t_trip_ms <= 1500
+        ? pill("ok","≤ 1,5 s") : pill("bad","> 1,5 s"))],
+    ["Einschaltdauer", m.duty == null ? "—"
+      : fmt(m.duty*100, 1) + " % " + (m.duty > 0.08
+        ? pill("bad","heizt nach") : pill("ok","ok"))],
+  ];
+  tb.innerHTML = rows.map(([k,v]) => `<tr><td>${k}</td><td>${v}</td></tr>`).join("");
+}
+
+function makePdf(){
+  $("err").textContent = "";
+  try {
+    const form = {
+      lang:$("f_lang").value,
+      type:$("f_type").value, maker:$("f_maker").value,
+      serial:$("f_serial").value, year:$("f_year").value, site:$("f_site").value,
+      date:$("f_date").value, time:$("f_time").value,
+      temp:$("f_temp").value, rh:$("f_rh").value,
+      tester:$("f_tester").value, report:$("f_report").value || "—",
+      equip:$("f_equip").value, remarks:$("f_remarks").value,
+    };
+    pdfBytes = buildReport(parsed, form).save();
+    const url = URL.createObjectURL(new Blob([pdfBytes], {type:"application/pdf"}));
+    $("preview").src = url;
+    $("btnDl").disabled = false;
+  } catch (e){
+    $("err").textContent = "PDF: " + (e.message || e);
+    console.error(e);
+  }
+}
+
+function download(blob, name){
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+
+init();
+</script>
+</body>
+</html>
